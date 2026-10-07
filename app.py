@@ -8,7 +8,24 @@ st.set_page_config(
     page_icon="🩺",
     layout="centered"
 )
+def check_password():
+    if "authenticated" not in st.session_state:
+        st.session_state["authenticated"] = False
 
+    if not st.session_state["authenticated"]:
+        st.title("🔒 Restricted Access")
+        st.write("Please enter the password to access the AHD Screener.")
+        password = st.text_input("Password", type="password")
+        if st.button("Login"):
+            if password == "2440": 
+                st.session_state["authenticated"] = True
+                st.rerun()
+            else:
+                st.error("Incorrect password")
+        return False
+    return True
+if not check_password():
+    st.stop()
 # Load the trained ML Pipeline
 @st.cache_resource
 def load_model():
